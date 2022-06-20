@@ -4,7 +4,7 @@ from kivy.uix.screenmanager import Screen, ScreenManager
 from kivymd.uix.label import MDLabel
 from kivymd.uix.button import MDRectangleFlatButton
 
-from sms import sendSMS
+# from sms import sendSMS
 from screenNavigation import screen_helper
 
 class MenuScreen(Screen):
