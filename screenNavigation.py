@@ -1,5 +1,4 @@
-screen_helper = """
-
+screen_helper="""
 ScreenManager:
     LoginScreen:
     MainScreen:
@@ -10,6 +9,13 @@ ScreenManager:
 
 <LoginScreen>:
     name: 'Login'
+    MDCard:
+        size_hint: 0.8, 0.7
+        mode: 'fill'
+        fill_color: 0.3, 0.3, 0.3, 1
+        pos_hint: {'center_x':0.5, 'center_y':0.5}
+        padding: 25
+        spacing: 25
     MDLabel:
         text: "Login to SOS"
         halign: 'center'
@@ -132,5 +138,4 @@ ScreenManager:
         on_press:
             root.manager.transition.direction = 'right'
             root.manager.current = 'Menu'
-
 """
