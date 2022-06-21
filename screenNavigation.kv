@@ -1,12 +1,11 @@
-screen_helper="""
 ScreenManager:
     LoginScreen:
+    SignUpScreen:
     MainScreen:
     MenuScreen:
     ProfileScreen:
     FriendsScreen:
     MapScreen:
-
 <LoginScreen>:
     name: 'Login'
     MDCard:
@@ -21,10 +20,70 @@ ScreenManager:
         halign: 'center'
         pos_hint: {'center_x':0.5, 'center_y':0.8}
         theme_text_color: 'Custom'
-        text_color: (0.3, 0.3, 0.1, 0.8)
+        text_color: (0.3, 0.3, 0.1, 0.95)
         font_style: 'H4'
     MDTextField:
         id : userName
+        hint_text: "Username"
+        required: 'True'
+        mode: 'fill'
+        fill_color: [0, 0, 0, 0.3]
+        size_hint: 0.7, None
+        height: "30dp"
+        helper_text_mode: 'on_focus'
+        pos_hint: {'center_x':0.5,'center_y':0.6}
+    MDTextField:
+        id : userPass
+        hint_text: "Password"
+        required: 'True'
+        mode: 'fill'
+        fill_color: [0, 0, 0, 0.3]
+        size_hint: 0.7, None
+        height: "30dp"
+        helper_text_mode: 'on_focus'
+        pos_hint: {'center_x':0.5,'center_y':0.4}
+    MDRoundFlatButton:
+        text: "Login"
+        font_style:'H6'
+        pos_hint:{'center_x':0.5,'center_y':0.2}
+        on_press:
+            t = root.login(userName.text, userPass.text)
+            root.manager.transition.direction = 'left'
+            root.manager.current = 'Main' if t == True else 'Login'
+
+    MDRoundFlatButton:
+        text: "Sign Up"
+        font_style:'H6'
+        pos_hint:{'center_x':0.5,'center_y':0.1}
+        on_press:
+            root.manager.current = 'SignUp'
+
+<SignUpScreen>:
+    name: "SignUp"
+    MDRectangleFlatButton:
+        text: "<-"
+        valign: 'top'
+        pos_hint: {'x':0, 'center_y':0.95}
+        font_style: 'H6'
+        on_press:
+            root.manager.transition.direction = 'right'
+            root.manager.current = 'Login'
+    MDCard:
+        size_hint: 0.8, 0.7
+        mode: 'fill'
+        fill_color: 0.5, 0.5, 0.5, 1
+        pos_hint: {'center_x':0.5, 'center_y':0.5}
+        padding: 25
+        spacing: 25
+    MDLabel:
+        text: "Welcome to SOS"
+        halign: 'center'
+        pos_hint: {'center_x':0.5, 'center_y':0.95}
+        theme_text_color: 'Custom'
+        text_color: (0.5, 0.5, 0.1, 0.95)
+        font_style: 'H4'
+    MDTextField:
+        id : NUserName
         hint_text: "Username"
         required: 'True'
         mode: 'fill'
@@ -32,29 +91,56 @@ ScreenManager:
         size_hint: 0.7, None
         height: "30dp"
         helper_text_mode: 'on_focus'
-        pos_hint: {'center_x':0.5,'center_y':0.5}
+        pos_hint: {'center_x':0.5,'center_y':0.75}
     MDTextField:
-        id : userPass
+        id : NuserPass
         hint_text: "Password"
         required: 'True'
         mode: 'fill'
         fill_color: 0, 0, 0, 0.3
-        max_text_length: 6
+        size_hint: 0.7, None
+        height: "30dp"
+        helper_text_mode: 'on_focus'
+        pos_hint: {'center_x':0.5,'center_y':0.6}
+    MDTextField:
+        id : NCuserPass
+        hint_text: "Confirm Password"
+        required: 'True'
+        mode: 'fill'
+        fill_color: 0, 0, 0, 0.3
+        size_hint: 0.7, None
+        height: "30dp"
+        helper_text_mode: 'on_focus'
+        pos_hint: {'center_x':0.5,'center_y':0.45}
+    MDTextField:
+        id : Nemail
+        hint_text: "E-mail"
+        required: 'True'
+        mode: 'fill'
+        fill_color: 0, 0, 0, 0.3
         size_hint: 0.7, None
         height: "30dp"
         helper_text_mode: 'on_focus'
         pos_hint: {'center_x':0.5,'center_y':0.3}
+    MDTextField:
+        id : Nnumber
+        hint_text: "Contact No."
+        required: 'True'
+        mode: 'fill'
+        fill_color: 0, 0, 0, 0.3
+        size_hint: 0.7, None
+        height: "30dp"
+        helper_text_mode: 'on_focus'
+        pos_hint: {'center_x':0.5,'center_y':0.15}
     MDRoundFlatButton:
         text: "Login"
         font_style:'H6'
-        pos_hint:{'center_x':0.5,'center_y':0.1}
+        pos_hint:{'center_x':0.5,'center_y':0.05}
         on_press:
+            t = root.SignUp(NUserName.text, NuserPass.text, NCuserPass.text, Nemail.text, Nnumber.text)
             root.manager.transition.direction = 'left'
-            root.manager.current = 'Main'
-
-
-
-
+            root.manager.current = 'Main' if t == True else 'SignUp'
+    
 <MainScreen>:
     name: "Main"
     MDFillRoundFlatButton:
@@ -107,7 +193,6 @@ ScreenManager:
             root.manager.transition.direction = 'right'
             root.manager.current = 'Main'
             
-
 <ProfileScreen>:
     name: 'Profile'
     MDRectangleFlatButton:
@@ -118,6 +203,7 @@ ScreenManager:
         on_press:
             root.manager.transition.direction = 'right'
             root.manager.current = 'Menu'
+
 <FriendsScreen>:
     name: 'Friends'
     MDRectangleFlatButton:
@@ -128,6 +214,7 @@ ScreenManager:
         on_press:
             root.manager.transition.direction = 'right'
             root.manager.current = 'Menu'
+
 <MapScreen>:
     name: 'Map'
     MDRectangleFlatButton:
@@ -138,4 +225,3 @@ ScreenManager:
         on_press:
             root.manager.transition.direction = 'right'
             root.manager.current = 'Menu'
-"""

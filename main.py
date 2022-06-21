@@ -1,13 +1,34 @@
 from kivymd.app import MDApp
 from kivy.lang.builder import Builder
-from kivy.uix.screenmanager import Screen, ScreenManager
-from kivymd.uix.label import MDLabel
+from kivy.uix.screenmanager import FadeTransition, Screen, ScreenManager
+from kivymd.uix.button import MDFlatButton
+from kivymd.uix.dialog import MDDialog
 
-# from sms import sendSMS
-from screenNavigation import screen_helper
+from sms import sendSMS
+import pymongo
+
+client = pymongo.MongoClient("mongodb://localhost:27017/")    
+db = client['Test']
+collection = db['TestCollection']
+
 
 class LoginScreen(Screen):
-    pass
+    def login(self, name, password):
+        one = collection.find_one({'name':name, 'password':password})
+        if(one != None):
+            return True
+        else:
+            return False
+
+class SignUpScreen(Screen):
+    def SignUp(self, name, p, cp, email, number):
+        if p == cp:
+            if collection.find_one({'name':name}) == None:
+                collection.insert_one({'name':name, 'password':p, 'number':int(number), 'mail':email})
+                return True
+        else:
+            return False
+
 class MainScreen(Screen):
     pass
 class MenuScreen(Screen):
@@ -22,6 +43,7 @@ class MapScreen(Screen):
 
 sm = ScreenManager()
 sm.add_widget(LoginScreen(name='Login'))
+sm.add_widget(SignUpScreen(name='SignUp'))
 sm.add_widget(MainScreen(name='Main'))
 sm.add_widget(MenuScreen(name='Menu'))
 sm.add_widget(ProfileScreen(name='Profile'))
@@ -37,7 +59,7 @@ class Friends:
 class SOSApp(MDApp):
 
     def build(self):
-        screen = Builder.load_string(screen_helper)
+        screen = Builder.load_file("screenNavigation.kv")
         self.theme_cls.theme_style = "Light"
         self.theme_cls.primary_palette = "Amber"
 
