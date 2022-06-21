@@ -1,5 +1,4 @@
 import email
-from itertools import count
 import pyrebase
 import time
 from rsa import sign
