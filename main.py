@@ -5,12 +5,16 @@ from kivymd.uix import dialog
 from kivymd.uix.button import MDFlatButton
 from kivymd.uix.dialog import MDDialog
 #from android.permissions import Permission, request_permissions
+import os
 import random
+from dotenv import load_dotenv
+
+load_dotenv()
 
 from sms import sendSMS
 import pymongo
 
-client = pymongo.MongoClient("mongodb+srv://Devansh:Devansh25@cluster0.j6gen.mongodb.net/?retryWrites=true&w=majority")    
+client = pymongo.MongoClient(os.getenv("serverLink"))    
 db = client['SOS']
 collection = db['SOSUserCollection']
 
