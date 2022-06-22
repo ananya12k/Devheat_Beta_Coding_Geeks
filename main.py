@@ -4,21 +4,29 @@ from kivy.uix.screenmanager import FadeTransition, Screen, ScreenManager
 from kivymd.uix import dialog
 from kivymd.uix.button import MDFlatButton
 from kivymd.uix.dialog import MDDialog
+#from android.permissions import Permission, request_permissions
 import random
 
 from sms import sendSMS
 import pymongo
 
-client = pymongo.MongoClient("mongodb://localhost:27017/")    
-db = client['Test']
-collection = db['TestCollection']
+client = pymongo.MongoClient("mongodb+srv://Devansh:Devansh25@cluster0.j6gen.mongodb.net/?retryWrites=true&w=majority")    
+db = client['SOS']
+collection = db['SOSUserCollection']
 
+user = {}
 
 class LoginScreen(Screen):
+
+    def __init__(self, **kw):
+        super().__init__(**kw)
+#        request_permissions([Permission.INTERNET])
+
     def login(self, name, password):
         try:
             if collection.find_one({"name":name}) != None:
                 if collection.find_one({"name":name, "password":password}) != None:
+                    user = collection.find_one({"name":name, "password":password})
                     return True
                 else:
                     SOSApp().PopUp("Password", "Wrong Password !!", 'Login')
@@ -34,6 +42,7 @@ class SignUpScreen(Screen):
                 if collection.find_one({"name":name}) == None:
                     if collection.find_one({"number":int(number)}) == None:
                         collection.insert_one({"name":name, "password":p, "number":int(number), "mail":email, "friends":[]})
+                        user = collection.find_one({"name":name, "password":p})
                         return True
                     else:
                         SOSApp().PopUp("Mobile number",  "Can't register the same number twice.", 'SignUp')
@@ -44,7 +53,6 @@ class SignUpScreen(Screen):
         except:
             SOSApp().PopUp("Server issus", "Try after some time", 'SignUp')
 
-
 class OTPScreen(Screen):
     otp=0
     def sendOTP(self, number):
@@ -53,16 +61,21 @@ class OTPScreen(Screen):
             sendSMS("Your OTP is ", "+91" + number, str(self.otp) + ".")
         else:
             SOSApp().PopUp("Mobile number",  "User not found.", 'OTP')
-    def verifyOTP(self, OTP):
-        print(self.otp)
-        print(OTP)
+    def verifyOTP(self, OTP, number):
         if str(self.otp) == OTP:
+            user = collection.find_one({"number":int(number)})
             return True
         else:
             SOSApp().PopUp("OTP",  "Invalid OTP.", 'OTP')
 
 class FPassScreen(Screen):
-    pass
+    def setPass(self, p, cp):
+        if p == cp:
+            collection.update_one(user, {"$set":{"password":p}})
+            SOSApp().PopUp("Welcome back", "Password changed !", 'Main')
+        else:
+            SOSApp().PopUp("Confirm Password", "Password & Confirm Password must be same.", 'FPass')
+
 class MainScreen(Screen):
     pass
 class MenuScreen(Screen):

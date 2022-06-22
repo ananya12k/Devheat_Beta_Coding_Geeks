@@ -124,10 +124,9 @@ ScreenManager:
         fill_color: 1, 1, 0, 0.8
         pos_hint: {'center_x':0.8,'center_y':0.45}
         on_press:
-            t = root.verifyOTP(otp.text)
+            t = root.verifyOTP(otp.text, Fnumber.text)
             root.manager.transition.direction = 'left'
             root.manager.current = 'FPass' if t else 'OTP'
-
 
 <FPassScreen>:
     name:"FPass"
@@ -139,6 +138,38 @@ ScreenManager:
         on_press:
             root.manager.transition.direction = 'right'
             root.manager.current = 'Login'
+    MDLabel:
+        text: "Reset Password"
+        halign: 'center'
+        pos_hint: {'center_x':0.5, 'center_y':0.75}
+        theme_text_color: 'Custom'
+        text_color: (0.5, 0.5, 0.1, 0.95)
+        font_style: 'H5'
+    MDTextField:
+        id : newPass
+        hint_text: "New Password"
+        required: 'True'
+        mode: 'fill'
+        fill_color: 0, 0, 0, 0.3
+        size_hint: 0.7, None
+        height: "30dp"
+        helper_text_mode: 'on_focus'
+        pos_hint: {'center_x':0.5,'center_y':0.55}
+    MDTextField:
+        id : newCPass
+        hint_text: "Confirm Password"
+        required: 'True'
+        mode: 'fill'
+        fill_color: 0, 0, 0, 0.3
+        size_hint: 0.7, None
+        height: "30dp"
+        helper_text_mode: 'on_focus'
+        pos_hint: {'center_x':0.5,'center_y':0.45}
+    MDFillRoundFlatButton:
+        text: "Set Password"
+        fill_color: 1, 1, 0, 0.8
+        pos_hint:{'center_x':0.5,'center_y':0.35}
+        on_press:root.setPass(newPass.text, newCPass.text)
 
 <SignUpScreen>:
     name: "SignUp"
