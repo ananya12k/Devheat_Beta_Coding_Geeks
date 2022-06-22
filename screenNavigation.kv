@@ -1,11 +1,15 @@
 ScreenManager:
     LoginScreen:
     SignUpScreen:
+    OTPScreen:
+    FPassScreen:
     MainScreen:
     MenuScreen:
     ProfileScreen:
     FriendsScreen:
     MapScreen:
+
+
 <LoginScreen>:
     name: 'Login'
     MDCard:
@@ -49,14 +53,92 @@ ScreenManager:
         on_press:
             t = root.login(userName.text, userPass.text)
             root.manager.transition.direction = 'left'
-            root.manager.current = 'Main' if t == True else 'Login'
-
+            root.manager.current = 'Main' if t == True else app.PopUp("Invalid User Name or Password!", "Try Forgot Password", 'Login')
     MDRoundFlatButton:
         text: "Sign Up"
         font_style:'H6'
-        pos_hint:{'center_x':0.5,'center_y':0.1}
+        pos_hint:{'center_x':0.5,'center_y':0.05}
         on_press:
+            root.manager.transition.direction = 'left'
             root.manager.current = 'SignUp'
+    
+    MDFlatButton:
+        text: "Forgot Password??"
+        font_style:'H6'
+        pos_hint:{'center_x':0.8,'center_y':0.2}
+        on_press:
+            root.manager.transition.direction = 'left'
+            root.manager.current = 'OTP'
+
+<OTPScreen>:
+    name: "OTP"
+    MDRectangleFlatButton:
+        text: "<-"
+        valign: 'top'
+        pos_hint: {'x':0, 'center_y':0.95}
+        font_style: 'H6'
+        on_press:
+            root.manager.transition.direction = 'right'
+            root.manager.current = 'Login'
+    MDCard:
+        size_hint: 0.8, 0.7
+        mode: 'fill'
+        fill_color: 0.5, 0.5, 0.5, 1
+        pos_hint: {'center_x':0.5, 'center_y':0.5}
+        padding: 25
+        spacing: 25
+    MDLabel:
+        text: "Mobile Verification"
+        halign: 'center'
+        pos_hint: {'center_x':0.5, 'center_y':0.75}
+        theme_text_color: 'Custom'
+        text_color: (0.5, 0.5, 0.1, 0.95)
+        font_style: 'H5'
+    MDTextField:
+        id : Fnumber
+        hint_text: "Contact No."
+        required: 'True'
+        mode: 'fill'
+        fill_color: 0, 0, 0, 0.3
+        size_hint: 0.7, None
+        height: "30dp"
+        helper_text_mode: 'on_focus'
+        pos_hint: {'center_x':0.5,'center_y':0.55}
+    MDFillRoundFlatButton:
+        text: "Send OTP"
+        fill_color: 1, 1, 0, 0.8
+        pos_hint:{'center_x':0.8,'center_y':0.55}
+        on_press:root.sendOTP(Fnumber.text)
+    MDTextField:
+        id : otp
+        hint_text: "OTP"
+        required: 'True'
+        mode: 'fill'
+        fill_color: 0, 0, 0, 0.3
+        size_hint: 0.7, None
+        height: "30dp"
+        helper_text_mode: 'on_focus'
+        pos_hint: {'center_x':0.5,'center_y':0.45}
+    MDFillRoundFlatButton:
+        text: "Verify OTP"
+        fill_color: 1, 1, 0, 0.8
+        pos_hint: {'center_x':0.8,'center_y':0.45}
+        on_press:
+            t = root.verifyOTP(otp.text)
+            root.manager.transition.direction = 'left'
+            root.manager.current = 'FPass' if t else 'OTP'
+
+
+<FPassScreen>:
+    name:"FPass"
+    MDRectangleFlatButton:
+        text: "<-"
+        valign: 'top'
+        pos_hint: {'x':0, 'center_y':0.95}
+        font_style: 'H6'
+        on_press:
+            root.manager.transition.direction = 'right'
+            root.manager.current = 'Login'
 
 <SignUpScreen>:
     name: "SignUp"
@@ -91,7 +173,7 @@ ScreenManager:
         size_hint: 0.7, None
         height: "30dp"
         helper_text_mode: 'on_focus'
-        pos_hint: {'center_x':0.5,'center_y':0.75}
+        pos_hint: {'center_x':0.5,'center_y':0.85}
     MDTextField:
         id : NuserPass
         hint_text: "Password"
@@ -101,7 +183,7 @@ ScreenManager:
         size_hint: 0.7, None
         height: "30dp"
         helper_text_mode: 'on_focus'
-        pos_hint: {'center_x':0.5,'center_y':0.6}
+        pos_hint: {'center_x':0.5,'center_y':0.7}
     MDTextField:
         id : NCuserPass
         hint_text: "Confirm Password"
@@ -111,7 +193,7 @@ ScreenManager:
         size_hint: 0.7, None
         height: "30dp"
         helper_text_mode: 'on_focus'
-        pos_hint: {'center_x':0.5,'center_y':0.45}
+        pos_hint: {'center_x':0.5,'center_y':0.55}
     MDTextField:
         id : Nemail
         hint_text: "E-mail"
@@ -121,7 +203,7 @@ ScreenManager:
         size_hint: 0.7, None
         height: "30dp"
         helper_text_mode: 'on_focus'
-        pos_hint: {'center_x':0.5,'center_y':0.3}
+        pos_hint: {'center_x':0.5,'center_y':0.4}
     MDTextField:
         id : Nnumber
         hint_text: "Contact No."
@@ -131,7 +213,7 @@ ScreenManager:
         size_hint: 0.7, None
         height: "30dp"
         helper_text_mode: 'on_focus'
-        pos_hint: {'center_x':0.5,'center_y':0.15}
+        pos_hint: {'center_x':0.5,'center_y':0.25}
     MDRoundFlatButton:
         text: "Login"
         font_style:'H6'
