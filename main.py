@@ -4,15 +4,14 @@ from kivy.uix.screenmanager import FadeTransition, Screen, ScreenManager
 from kivymd.uix import dialog
 from kivymd.uix.button import MDFlatButton
 from kivymd.uix.dialog import MDDialog
-#from android.permissions import Permission, request_permissions
-import os
-import random
-from dotenv import load_dotenv
 
+import random
+import pymongo
+import os
+from dotenv import load_dotenv
 load_dotenv()
 
 from sms import sendSMS
-import pymongo
 
 client = pymongo.MongoClient(os.getenv("serverLink"))    
 db = client['SOS']
@@ -22,10 +21,6 @@ user = {}
 
 class LoginScreen(Screen):
 
-    def __init__(self, **kw):
-        super().__init__(**kw)
-#        request_permissions([Permission.INTERNET])
-
     def login(self, name, password):
         try:
             if collection.find_one({"name":name}) != None:
@@ -34,10 +29,13 @@ class LoginScreen(Screen):
                     return True
                 else:
                     SOSApp().PopUp("Password", "Wrong Password !!", 'Login')
+                    return False
             else:
                 SOSApp().PopUp("Username", "User dosn't exist.", 'Login')
+                return False
         except:
             SOSApp().PopUp("Server Error", "Try after some time", 'Login')
+            return False
 
 class SignUpScreen(Screen):
     def SignUp(self, name, p, cp, email, number):
@@ -81,7 +79,13 @@ class FPassScreen(Screen):
             SOSApp().PopUp("Confirm Password", "Password & Confirm Password must be same.", 'FPass')
 
 class MainScreen(Screen):
-    pass
+    def sendAlert(self):
+        friends = collection.find_one(user)['friends']
+        for friend in friends:
+            num = friend['number']
+            name = collection.find_one(user)['name']
+            sendSMS(name, "+91"+str(num), " is in danger.")
+
 class MenuScreen(Screen):
     pass
 class ProfileScreen(Screen):
