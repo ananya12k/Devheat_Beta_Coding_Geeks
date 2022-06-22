@@ -1,0 +1,76 @@
+#:import utils kivy.utils
+
+<ProfilePhotoScreen>:
+    FloatLayout:
+        GridLayout:
+            cols: 1
+            pos_hint: {"top": .895, "left": 1}
+            size_hint: 1, .795
+            id: profilephotogrid
+        GridLayout:
+            rows: 1
+            size_hint: 1, .1
+            pos_hint: {"top": .1, "right": 1}
+            LabelButton:
+                text: "[u]Taxi[/u]"
+                canvas.before:
+                    Color:
+                        rgb: app.theme_cls.primary_color if self.state == 'normal' else utils.get_color_from_hex("#6C5B7B")
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+                markup: True
+                on_release:
+                    app.change_screen("taxi_screen", direction='right', mode='push')
+            LabelButton:
+                text: "[u]Bus[/u]"
+                canvas.before:
+                    Color:
+                        rgb: app.theme_cls.primary_color if self.state == 'normal' else utils.get_color_from_hex("#6C5B7B")
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+                #size_hint: .33, .1
+                #pos_hint: {"top": .1, "right": .666}
+                markup: True
+                on_release:
+                    app.change_screen("bus_stop_screen", direction='up', mode='push')
+            LabelButton:
+                text: "[u]MRT/LRT[/u]"
+                canvas.before:
+                    Color:
+                        rgb: app.theme_cls.primary_color if self.state == 'normal' else utils.get_color_from_hex("#6C5B7B")
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+                #size_hint: .33, .1
+                #pos_hint: {"top": .1, "right": 1}
+                markup: True
+                on_release:
+                    app.change_screen("mrtlrt_screen", direction='down', mode='push')
+            LabelButton:
+                text: "[u]Traffic[/u]"
+                canvas.before:
+                    Color:
+                        rgb: app.theme_cls.primary_color if self.state == 'normal' else utils.get_color_from_hex("#6C5B7B")
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+                #size_hint: .33, .1
+                #pos_hint: {"top": .1, "right": 1}
+                markup: True
+                on_release:
+                    app.change_screen("incidents_screen", direction='up', mode='push')
+            LabelButton:
+                text: "[u]Parking[/u]"
+                canvas.before:
+                    Color:
+                        rgb: app.theme_cls.primary_color if self.state == 'normal' else utils.get_color_from_hex("#6C5B7B")
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+                #size_hint: .33, .1
+                #pos_hint: {"top": .1, "right": 1}
+                markup: True
+                on_release:
+                    app.change_screen("carpark_screen", direction='left', mode='push')
