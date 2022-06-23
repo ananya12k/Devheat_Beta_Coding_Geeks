@@ -1,8 +1,7 @@
+from turtle import title
 from kivymd.app import MDApp
 from kivy.lang.builder import Builder
-from kivy.uix.screenmanager import FadeTransition, Screen, ScreenManager
-from kivymd.uix import dialog
-from kivymd.uix.button import MDFlatButton
+from kivy.uix.screenmanager import Screen
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.datatables import MDDataTable
 from kivy.metrics import dp
@@ -32,6 +31,7 @@ class LoginScreen(Screen):
             if collection.find_one({"name":name}) != None:
                 if collection.find_one({"name":name, "password":password}) != None:
                     user = collection.find_one({"name":name, "password":password})
+                    #print(user)
                     return True
                 else:
                     SOSApp().PopUp("Password", "Wrong Password !!", 'Login')
@@ -90,14 +90,25 @@ class MainScreen(Screen):
         for friend in friends:
             num = friend['number']
             name = collection.find_one(user)['name']
-            sendSMS(name, "+91"+str(num), " is in danger.")
+            try:
+                sendSMS(name, "+91"+str(num), " is in danger.")
+            except:
+                SOSApp().PopUp(name + " is not verified", "", 'Main')        
+        SOSApp().PopUp("SOS sent !!", "", 'Main')
 
 class MenuScreen(Screen):
     pass
+
 class ProfileScreen(Screen):
-    pass
+    user1 = collection.find_one(user)
+    def update(self, name, email, number):
+        collection.update_one(self.user1, {"$set":{"name":name,"number":int(number), "mail":email}})
+        user = collection.find_one({'_id':self.user1['_id']})
+        return True
+        
 class FriendsScreen(Screen):
     pass
+
 class MapScreen(Screen):
     pass
 
@@ -143,7 +154,10 @@ class AddFriends(Screen):
             SOSApp().PopUp("Server issues", "Try after some time", 'Add Friends')
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 29e6706e7f1fde094e86d3988bcb655709cc740a
 class SOSApp(MDApp):
     dialog = None
 
