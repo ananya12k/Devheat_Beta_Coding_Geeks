@@ -12,10 +12,10 @@ def get_Host_name_IP():
         print("IP : ",host_ip)
         g=geocoder.ip("me")
         myaddress=g.latlng
-        my_map1=folium.Map(location=myaddress,zoom_start=10)
+        my_map1=folium.Map(location=myaddress,zoom_start=25)
 
-        folium.CircleMarker(location=myaddress,radius=50,popup="Bharuch",color="red").add_to(my_map1)
-        folium.Marker(myaddress,popup="Bharuch").add_to(my_map1)
+        folium.CircleMarker(location=myaddress,radius=50,popup="ME",color="red").add_to(my_map1)
+        folium.Marker(myaddress,popup="ME").add_to(my_map1)
         my_map1.save("mymap.html")
         webbrowser.open_new_tab('mymap.html')
         

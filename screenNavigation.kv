@@ -1,11 +1,15 @@
 ScreenManager:
     LoginScreen:
     SignUpScreen:
+    OTPScreen:
+    FPassScreen:
     MainScreen:
     MenuScreen:
     ProfileScreen:
     FriendsScreen:
     MapScreen:
+
+
 <LoginScreen>:
     name: 'Login'
     MDCard:
@@ -25,6 +29,7 @@ ScreenManager:
     MDTextField:
         id : userName
         hint_text: "Username"
+        text_halign: 'center'
         required: 'True'
         mode: 'fill'
         fill_color: [0, 0, 0, 0.3]
@@ -32,8 +37,9 @@ ScreenManager:
         height: "30dp"
         helper_text_mode: 'on_focus'
         pos_hint: {'center_x':0.5,'center_y':0.6}
+        icon_left: "account-circle-outline"
     MDTextField:
-        id : userPass
+        id: userPass
         hint_text: "Password"
         required: 'True'
         mode: 'fill'
@@ -42,24 +48,43 @@ ScreenManager:
         height: "30dp"
         helper_text_mode: 'on_focus'
         pos_hint: {'center_x':0.5,'center_y':0.4}
+        password: True
+        icon_left: "key-outline"
+    MDIconButton:
+        icon: "eye-off"
+        pos: userPass.center_x + userPass.width/2 - self.width, userPass.center_y + userPass.height/2 - self.height
+        theme_text_color: "Hint"
+        on_release:
+            self.icon = "eye" if self.icon == "eye-off" else "eye-off"
+            userPass.password = False if userPass.password is True else True
     MDRoundFlatButton:
         text: "Login"
         font_style:'H6'
-        pos_hint:{'center_x':0.5,'center_y':0.2}
+        pos_hint:{'center_x':0.5,'center_y':0.25}
         on_press:
             t = root.login(userName.text, userPass.text)
             root.manager.transition.direction = 'left'
-            root.manager.current = 'Main' if t == True else 'Login'
-
+            root.manager.current = 'Main' if t == True else app.PopUp("Invalid User Name or Password!", "Try Forgot Password", 'Login')
     MDRoundFlatButton:
         text: "Sign Up"
         font_style:'H6'
-        pos_hint:{'center_x':0.5,'center_y':0.1}
+        pos_hint:{'center_x':0.5,'center_y':0.05}
         on_press:
+            root.manager.transition.direction = 'left'
             root.manager.current = 'SignUp'
+    
+    MDFlatButton:
+        text: "Forgot Password??"
+        theme_text_color: 'Custom'
+        text_color: (0.2, 0.2, 0.2, 0.7)
+        font_style:'Body1'
+        pos_hint:{'center_x':0.5,'center_y':0.15}
+        on_press:
+            root.manager.transition.direction = 'left'
+            root.manager.current = 'OTP'
 
-<SignUpScreen>:
-    name: "SignUp"
+<OTPScreen>:
+    name: "OTP"
     MDRectangleFlatButton:
         text: "<-"
         valign: 'top'
@@ -76,9 +101,128 @@ ScreenManager:
         padding: 25
         spacing: 25
     MDLabel:
+        text: "Mobile Verification"
+        halign: 'center'
+        pos_hint: {'center_x':0.5, 'center_y':0.75}
+        theme_text_color: 'Custom'
+        text_color: (0.5, 0.5, 0.1, 0.95)
+        font_style: 'H5'
+    MDTextField:
+        id: FNumber
+        hint_text: "Contact No."
+        required: 'True'
+        mode: 'fill'
+        fill_color: 0, 0, 0, 0.3
+        size_hint: 0.7, None
+        height: "30dp"
+        helper_text_mode: 'on_focus'
+        pos_hint: {'center_x':0.5,'center_y':0.55}
+    MDFillRoundFlatButton:
+        text: "Send OTP"
+        fill_color: 1, 1, 0, 0.8
+        pos: FNumber.center_x + FNumber.width/2 - self.width, FNumber.center_y - self.height/2
+        on_press: root.sendOTP(FNumber.text)
+    MDTextField:
+        id : otp
+        hint_text: "OTP"
+        required: 'True'
+        mode: 'fill'
+        fill_color: 0, 0, 0, 0.3
+        size_hint: 0.7, None
+        height: "30dp"
+        helper_text_mode: 'on_focus'
+        pos_hint: {'center_x':0.5,'center_y':0.45}
+    MDFillRoundFlatButton:
+        text: "Verify OTP"
+        fill_color: 1, 1, 0, 0.8
+        pos: otp.center_x + otp.width/2 - self.width, otp.center_y - self.height/2
+        on_press:
+            t = root.verifyOTP(otp.text, Fnumber.text)
+            root.manager.transition.direction = 'left'
+            root.manager.current = 'FPass' if t else 'OTP'
+
+<FPassScreen>:
+    name:"FPass"
+    MDRectangleFlatButton:
+        text: "<-"
+        valign: 'top'
+        pos_hint: {'x':0, 'center_y':0.95}
+        font_style: 'H6'
+        on_press:
+            root.manager.transition.direction = 'right'
+            root.manager.current = 'Login'
+    MDLabel:
+        text: "Reset Password"
+        halign: 'center'
+        pos_hint: {'center_x':0.5, 'center_y':0.75}
+        theme_text_color: 'Custom'
+        text_color: (0.5, 0.5, 0.1, 0.95)
+        font_style: 'H5'
+    MDTextField:
+        id: newPass
+        hint_text: "Password"
+        required: 'True'
+        mode: 'fill'
+        fill_color: [0, 0, 0, 0.3]
+        size_hint: 0.7, None
+        height: "30dp"
+        helper_text_mode: 'on_focus'
+        pos_hint: {'center_x':0.5,'center_y':0.55}
+        password: True
+        icon_left: "shield-key-outline"
+    MDIconButton:
+        icon: "eye-off"
+        pos: newPass.center_x + newPass.width/2 - self.width, newPass.center_y + newPass.height/2 - self.height
+        theme_text_color: "Hint"
+        on_release:
+            self.icon = "eye" if self.icon == "eye-off" else "eye-off"
+            newPass.password = False if newPass.password is True else True
+    MDTextField:
+        id: newCPass
+        hint_text: "Password"
+        required: 'True'
+        mode: 'fill'
+        fill_color: [0, 0, 0, 0.3]
+        size_hint: 0.7, None
+        height: "30dp"
+        helper_text_mode: 'on_focus'
+        pos_hint: {'center_x':0.5,'center_y':0.45}
+        password: True
+        icon_left: "shield-key-outline"
+    MDIconButton:
+        icon: "eye-off"
+        pos: newCPass.center_x + newCPass.width/2 - self.width, newCPass.center_y + newCPass.height/2 - self.height
+        theme_text_color: "Hint"
+        on_release:
+            self.icon = "eye" if self.icon == "eye-off" else "eye-off"
+            newCPass.password = False if userPass.password is True else True
+    MDFillRoundFlatButton:
+        text: "Set Password"
+        fill_color: 1, 1, 0, 0.8
+        pos_hint:{'center_x':0.5,'center_y':0.35}
+        on_press:root.setPass(newPass.text, newCPass.text)
+
+<SignUpScreen>:
+    name: "SignUp"
+    MDRectangleFlatButton:
+        text: "<-"
+        valign: 'top'
+        pos_hint: {'x':0, 'center_y':0.95}
+        font_style: 'H6'
+        on_press:
+            root.manager.transition.direction = 'right'
+            root.manager.current = 'Login'
+    MDCard:
+        size_hint: 0.8, 0.7
+        mode: 'fill'
+        fill_color: 0.5, 0.5, 0.5, 1
+        pos_hint: {'center_x':0.5, 'center_y':0.45}
+        padding: 25
+        spacing: 25
+    MDLabel:
         text: "Welcome to SOS"
         halign: 'center'
-        pos_hint: {'center_x':0.5, 'center_y':0.95}
+        pos_hint: {'center_x':0.5, 'center_y':0.8}
         theme_text_color: 'Custom'
         text_color: (0.5, 0.5, 0.1, 0.95)
         font_style: 'H4'
@@ -91,27 +235,46 @@ ScreenManager:
         size_hint: 0.7, None
         height: "30dp"
         helper_text_mode: 'on_focus'
-        pos_hint: {'center_x':0.5,'center_y':0.75}
+        icon_left: 'account-plus-outline'
+        pos_hint: {'center_x':0.5,'center_y':0.6}
     MDTextField:
-        id : NuserPass
+        id: NuserPass
         hint_text: "Password"
         required: 'True'
         mode: 'fill'
-        fill_color: 0, 0, 0, 0.3
+        fill_color: [0, 0, 0, 0.3]
         size_hint: 0.7, None
         height: "30dp"
         helper_text_mode: 'on_focus'
-        pos_hint: {'center_x':0.5,'center_y':0.6}
+        pos_hint: {'center_x':0.5,'center_y':0.5}
+        password: True
+        icon_left: "key-outline"
+    MDIconButton:
+        icon: "eye-off"
+        pos: NuserPass.center_x + NuserPass.width/2 - self.width, NuserPass.center_y + NuserPass.height/2 - self.height
+        theme_text_color: "Hint"
+        on_release:
+            self.icon = "eye" if self.icon == "eye-off" else "eye-off"
+            NuserPass.password = False if NuserPass.password is True else True
     MDTextField:
-        id : NCuserPass
+        id: NCuserPass
         hint_text: "Confirm Password"
         required: 'True'
         mode: 'fill'
-        fill_color: 0, 0, 0, 0.3
+        fill_color: [0, 0, 0, 0.3]
         size_hint: 0.7, None
         height: "30dp"
         helper_text_mode: 'on_focus'
-        pos_hint: {'center_x':0.5,'center_y':0.45}
+        pos_hint: {'center_x':0.5,'center_y':0.4}
+        password: True
+        icon_left: "key-outline"
+    MDIconButton:
+        icon: "eye-off"
+        pos: NCuserPass.center_x + NCuserPass.width/2 - self.width, NCuserPass.center_y + NCuserPass.height/2 - self.height
+        theme_text_color: "Hint"
+        on_release:
+            self.icon = "eye" if self.icon == "eye-off" else "eye-off"
+            NCuserPass.password = False if NCuserPass.password is True else True
     MDTextField:
         id : Nemail
         hint_text: "E-mail"
@@ -121,6 +284,7 @@ ScreenManager:
         size_hint: 0.7, None
         height: "30dp"
         helper_text_mode: 'on_focus'
+        icon_left: 'email-plus-outline'
         pos_hint: {'center_x':0.5,'center_y':0.3}
     MDTextField:
         id : Nnumber
@@ -131,7 +295,8 @@ ScreenManager:
         size_hint: 0.7, None
         height: "30dp"
         helper_text_mode: 'on_focus'
-        pos_hint: {'center_x':0.5,'center_y':0.15}
+        icon_left: 'account-box-outline'
+        pos_hint: {'center_x':0.5,'center_y':0.2}
     MDRoundFlatButton:
         text: "Login"
         font_style:'H6'
@@ -147,6 +312,7 @@ ScreenManager:
         text: "SOS"
         font_style:'H2'
         pos_hint:{'center_x':0.5,'center_y':0.5}
+        on_press: root.sendAlert()
     MDRoundFlatButton:
         text: "Menu"
         font_style:'H6'
