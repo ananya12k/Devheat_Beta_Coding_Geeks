@@ -84,8 +84,11 @@ class MainScreen(Screen):
         for friend in friends:
             num = friend['number']
             name = collection.find_one(user)['name']
-            sendSMS(name, "+91"+str(num), " is in danger.")
-            SOSApp().PopUp("SOS sent !!", "", 'Main')
+            try:
+                sendSMS(name, "+91"+str(num), " is in danger.")
+            except:
+                SOSApp().PopUp(name + " is not verified", "", 'Main')        
+        SOSApp().PopUp("SOS sent !!", "", 'Main')
 
 class MenuScreen(Screen):
     pass
