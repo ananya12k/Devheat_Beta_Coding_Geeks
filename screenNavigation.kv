@@ -361,11 +361,72 @@ ScreenManager:
             
 <ProfileScreen>:
     name: 'Profile'
+    MDCard:
+        id: card
+        size_hint: 0.8, 0.5
+        mode: 'fill'
+        fill_color: 0.3, 0.3, 0.3, 1
+        pos_hint: {'center_x':0.5, 'center_y':0.5}
+        padding: 20
+        spacing: 20
+        MDBoxLayout:
+            orientation: 'vertical'
+            md_bg_color: app.theme_cls.primary_color
+            spacing: dp(35)
+            MDTextField:
+                id : userName
+                text: root.user1['name']
+                hint_text: "Username"
+                mode: 'fill'
+                pos_hint: {'center_y':0.5}
+                fill_color: 0, 0, 0, 0.3
+                helper_text_mode: 'on_focus'
+                icon_right: 'account-plus-outline'
+            MDTextField:
+                id : email
+                text: root.user1['mail']
+                hint_text: "E-mail"
+                mode: 'fill'
+                pos_hint: {'center_y':0.5}
+                fill_color: app.theme_cls.primary_color
+                helper_text_mode: 'on_focus'
+                icon_right: 'email-plus-outline'
+            MDTextField:
+                id : number
+                hint_text: "Contact No."
+                text: str(root.user1['number'])
+                mode: 'fill'
+                pos_hint: {'center_y':0.5}
+                fill_color: app.theme_cls.primary_color
+                helper_text_mode: 'on_focus'
+                icon_right: 'account-box-outline'
+
+
     MDRectangleFlatButton:
-        text: "<-"
-        valign: 'top'
-        pos_hint: {'x':0, 'center_y':0.95}
-        font_style: 'H6'
+        text: "Profile"
+        size_hint: dp(15), None
+        md_bg_color: app.theme_cls.primary_color
+        theme_text_color: 'Custom'
+        text_color: 1, 1, 1, 1
+        halign: 'center'
+        pos_hint: {'center_x':0.5, 'center_y':0.95}
+        font_style: 'H3'
+    MDRectangleFlatButton:
+        text: "Save"
+        theme_text_color: 'Custom'
+        text_color: app.theme_cls.primary_color
+        pos_hint: {'center_x':0.25, 'center_y': 0.2}
+        font_style: 'H4'
+        on_press:
+            u = root.update(userName.text, email.text, number.text)
+            root.manager.transition.direction = 'right'
+            root.manager.current = 'Menu' if u else 'Profile'
+    MDRectangleFlatButton:
+        text: "Discard"
+        theme_text_color: 'Custom'
+        text_color: app.theme_cls.primary_color
+        pos_hint: {'center_x':0.75, 'center_y': 0.2}
+        font_style: 'H4'
         on_press:
             root.manager.transition.direction = 'right'
             root.manager.current = 'Menu'
