@@ -31,7 +31,7 @@ class LoginScreen(Screen):
                     SOSApp().PopUp("Password", "Wrong Password !!", 'Login')
                     return False
             else:
-                SOSApp().PopUp("Username", "User dosn't exist.", 'Login')
+                SOSApp().PopUp("Username", "User doesn't exist.", 'Login')
                 return False
         except:
             SOSApp().PopUp("Server Error", "Try after some time", 'Login')
@@ -49,11 +49,11 @@ class SignUpScreen(Screen):
                     else:
                         SOSApp().PopUp("Mobile number",  "Can't register the same number twice.", 'SignUp')
                 else:
-                    SOSApp().PopUp("User name", "User name alredy exist", 'SignUp')
+                    SOSApp().PopUp("User name", "User name already exist", 'SignUp')
             else:
                 SOSApp().PopUp("Confirm Password", "Password & Confirm Password must be same", 'SignUp')
         except:
-            SOSApp().PopUp("Server issus", "Try after some time", 'SignUp')
+            SOSApp().PopUp("Server issues", "Try after some time", 'SignUp')
 
 class OTPScreen(Screen):
     otp=0
