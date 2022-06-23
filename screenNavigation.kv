@@ -78,13 +78,20 @@ ScreenManager:
         theme_text_color: 'Custom'
         text_color: (0.2, 0.2, 0.2, 0.7)
         font_style:'Body1'
-        pos_hint:{'center_x':0.5,'center_y':0.15}
+        pos_hint:{'center_x':0.5,'center_y':0.18}
         on_press:
             root.manager.transition.direction = 'left'
             root.manager.current = 'OTP'
 
 <OTPScreen>:
     name: "OTP"
+    MDCard:
+        size_hint: 0.8, 0.7
+        mode: 'fill'
+        fill_color: 0.3, 0.3, 0.3, 1
+        pos_hint: {'center_x':0.5, 'center_y':0.5}
+        padding: 25
+        spacing: 25
     MDRectangleFlatButton:
         text: "<-"
         valign: 'top'
@@ -143,6 +150,13 @@ ScreenManager:
 
 <FPassScreen>:
     name:"FPass"
+    MDCard:
+        size_hint: 0.8, 0.7
+        mode: 'fill'
+        fill_color: 0.3, 0.3, 0.3, 1
+        pos_hint: {'center_x':0.5, 'center_y':0.5}
+        padding: 25
+        spacing: 25
     MDRectangleFlatButton:
         text: "<-"
         valign: 'top'
@@ -204,6 +218,13 @@ ScreenManager:
 
 <SignUpScreen>:
     name: "SignUp"
+    MDCard:
+        size_hint: 0.8, 0.7
+        mode: 'fill'
+        fill_color: 0.3, 0.3, 0.3, 1
+        pos_hint: {'center_x':0.5, 'center_y':0.5}
+        padding: 25
+        spacing: 25
     MDRectangleFlatButton:
         text: "<-"
         valign: 'top'
@@ -308,6 +329,13 @@ ScreenManager:
     
 <MainScreen>:
     name: "Main"
+    MDCard:
+        size_hint: 0.8, 0.7
+        mode: 'fill'
+        fill_color: 0.3, 0.3, 0.3, 1
+        pos_hint: {'center_x':0.5, 'center_y':0.4}
+        padding: 25
+        spacing: 25
     MDFillRoundFlatButton:
         text: "SOS"
         font_style:'H2'
@@ -323,6 +351,13 @@ ScreenManager:
 
 <MenuScreen>:
     name: 'Menu'
+    MDCard:
+        size_hint: 0.8, 0.7
+        mode: 'fill'
+        fill_color: 0.3, 0.3, 0.3, 1
+        pos_hint: {'center_x':0.5, 'center_y':0.4}
+        padding: 25
+        spacing: 25
     MDLabel:
         text: "SOS"
         halign: 'center'
@@ -363,16 +398,15 @@ ScreenManager:
     name: 'Profile'
     MDCard:
         id: card
-        size_hint: 0.8, 0.5
+        size_hint: 1, 0.5
         mode: 'fill'
         fill_color: 0.3, 0.3, 0.3, 1
-        pos_hint: {'center_x':0.5, 'center_y':0.5}
+        pos_hint: {'center_x':0.5, 'center_y':0.6}
         padding: 20
         spacing: 20
         MDBoxLayout:
             orientation: 'vertical'
-            md_bg_color: app.theme_cls.primary_color
-            spacing: dp(35)
+            spacing: dp(20)
             MDTextField:
                 id : userName
                 text: root.user1['name']
@@ -400,33 +434,31 @@ ScreenManager:
                 fill_color: app.theme_cls.primary_color
                 helper_text_mode: 'on_focus'
                 icon_right: 'account-box-outline'
-
-
-    MDRectangleFlatButton:
+    MDLabel:
         text: "Profile"
-        size_hint: dp(15), None
-        md_bg_color: app.theme_cls.primary_color
-        theme_text_color: 'Custom'
-        text_color: 1, 1, 1, 1
         halign: 'center'
-        pos_hint: {'center_x':0.5, 'center_y':0.95}
-        font_style: 'H3'
-    MDRectangleFlatButton:
-        text: "Save"
+        pos_hint: {'center_x':0.5, 'center_y':0.8}
         theme_text_color: 'Custom'
-        text_color: app.theme_cls.primary_color
+        text_color: (0.3, 0.3, 0.1, 0.9)
+        font_style: 'H3'
+    MDFillRoundFlatButton:
+        text: "Save"
+        fill_color: 1, 1, 0, 0.8
+        theme_text_color: 'Custom'
+        text_color: 1, 1, 1, 0.8
         pos_hint: {'center_x':0.25, 'center_y': 0.2}
-        font_style: 'H4'
+        font_style: 'H6'
         on_press:
             u = root.update(userName.text, email.text, number.text)
             root.manager.transition.direction = 'right'
             root.manager.current = 'Menu' if u else 'Profile'
-    MDRectangleFlatButton:
+    MDFillRoundFlatButton:
         text: "Discard"
+        fill_color: 1, 1, 0, 0.8
         theme_text_color: 'Custom'
-        text_color: app.theme_cls.primary_color
+        text_color: 1, 1, 1, 0.8
         pos_hint: {'center_x':0.75, 'center_y': 0.2}
-        font_style: 'H4'
+        font_style: 'H6'
         on_press:
             root.manager.transition.direction = 'right'
             root.manager.current = 'Menu'

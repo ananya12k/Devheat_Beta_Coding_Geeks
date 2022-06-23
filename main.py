@@ -1,9 +1,7 @@
 from turtle import title
 from kivymd.app import MDApp
 from kivy.lang.builder import Builder
-from kivy.uix.screenmanager import FadeTransition, Screen, ScreenManager
-from kivymd.uix.label import MDLabel
-from kivymd.uix.boxlayout import MDBoxLayout
+from kivy.uix.screenmanager import Screen
 from kivymd.uix.dialog import MDDialog
 
 import random
