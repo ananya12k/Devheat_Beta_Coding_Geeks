@@ -85,6 +85,7 @@ class MainScreen(Screen):
             num = friend['number']
             name = collection.find_one(user)['name']
             sendSMS(name, "+91"+str(num), " is in danger.")
+            SOSApp().PopUp("SOS sent !!", "", 'Main')
 
 class MenuScreen(Screen):
     pass
