@@ -4,14 +4,20 @@ from kivy.uix.screenmanager import FadeTransition, Screen, ScreenManager
 from kivymd.uix import dialog
 from kivymd.uix.button import MDFlatButton
 from kivymd.uix.dialog import MDDialog
-
-import random
+from kivymd.uix.datatables import MDDataTable
+from kivy.metrics import dp
 import pymongo
 import os
+import random
 from dotenv import load_dotenv
-load_dotenv()
-
+import pandas as pd
 from sms import sendSMS
+
+load_dotenv()
+client = pymongo.MongoClient("serverlink")
+db = client['Friends']
+collection = db['add_and_delete_friends']
+
 
 client = pymongo.MongoClient(os.getenv("serverLink"))    
 db = client['SOS']
@@ -95,11 +101,48 @@ class FriendsScreen(Screen):
 class MapScreen(Screen):
     pass
 
+class FriendsScreen(Screen):
+    pass
 
-class Friends:
-    def __init__(self, name, number):
-        self.name = name
-        self.number = number
+class ViewFriends(Screen):
+    def view_friends(self):
+        all_records = collection.find()
+        list_cursor = list(all_records)
+        df = pd.DataFrame(list_cursor)
+        df.set_index("name", inplace=True)
+        Screen.add_widget(df)
+        return Screen
+
+
+class DeleteFriends(Screen):
+    def delete_friends(self, name):
+        try:
+            myquery = {"name": name}
+            db.collection.delete_one(myquery)
+            collection.update_one(myquery)
+
+            SOSApp().PopUp("Deleted Successfully", "Go Back", 'Delete Friends')
+        except:
+            SOSApp().PopUp("Server issues", "Try after some time", 'Delete Friends')
+
+
+class AddFriends(Screen):
+    def add_friends(self, name, number):
+        try:
+            if collection.find_one({"name": name}) == None:
+                if collection.find_one({"number": int(number)}) == None:
+                    collection.insert_one(
+                        {"name": name,  "number": int(number)})
+                    user = collection.find_one({"name": name})
+                    return True
+                else:
+                    SOSApp().PopUp("Mobile number",  "Can't add the same mobile number twice.", 'Add Friends')
+            else:
+                SOSApp().PopUp("name", "Contact name already exists", 'Add Friends')
+        except:
+            SOSApp().PopUp("Server issues", "Try after some time", 'Add Friends')
+
+
 
 class SOSApp(MDApp):
     dialog = None
