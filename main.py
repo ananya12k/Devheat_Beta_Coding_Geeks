@@ -88,6 +88,7 @@ class MainScreen(Screen):
 
 class MenuScreen(Screen):
     pass
+
 class ProfileScreen(Screen):
     pass
 class FriendsScreen(Screen):
