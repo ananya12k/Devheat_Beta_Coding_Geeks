@@ -153,11 +153,6 @@ class AddFriends(Screen):
         except:
             SOSApp().PopUp("Server issues", "Try after some time", 'Add Friends')
 
-
-<<<<<<< HEAD
-
-=======
->>>>>>> 29e6706e7f1fde094e86d3988bcb655709cc740a
 class SOSApp(MDApp):
     dialog = None
 
