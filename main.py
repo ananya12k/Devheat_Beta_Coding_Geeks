@@ -106,15 +106,12 @@ class ProfileScreen(Screen):
         user = collection.find_one({'_id':self.user1['_id']})
         return True
         
-class FriendsScreen(Screen):
-    pass
 
 class MapScreen(Screen):
     pass
 
 class FriendsScreen(Screen):
     pass
-
 class ViewFriends(Screen):
     def view_friends(self):
         all_records = collection.find()
