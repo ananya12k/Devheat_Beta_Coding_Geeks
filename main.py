@@ -126,9 +126,15 @@ class ProfileScreen(Screen):
         user = collection.find_one({'_id':user['_id']})
         return True
         
-class FriendsScreen(Screen):
+
+<<<<<<< HEAD
+=======
+class MapScreen(Screen):
     pass
 
+class FriendsScreen(Screen):
+    pass
+>>>>>>> 5131401c9f6c1d821f4378f7dd9fc5ea5cadf2ee
 class ViewFriends(Screen):
     def view_friends(self):
         all_records = collection.find()
@@ -169,11 +175,15 @@ class DeleteFriends(Screen):
                 SOSApp().PopUp("Friend not found.", "Check the details", 'Delete Friends')
                 return False
         except:
+<<<<<<< HEAD
             SOSApp().PopUp("Server issues", "Try after some time", 'Friends')
             return False
 
 class MapScreen(Screen):
     pass
+=======
+            SOSApp().PopUp("Server issues", "Try after some time", 'Add Friends')
+>>>>>>> 5131401c9f6c1d821f4378f7dd9fc5ea5cadf2ee
 
 class SOSApp(MDApp):
     dialog = None
