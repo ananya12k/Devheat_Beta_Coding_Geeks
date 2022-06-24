@@ -26,7 +26,15 @@ user = {}
 
 class LoginScreen(Screen):
 
+    def looged(self):
+        global user
+        if user == {}:
+            return False
+        else:
+            return True
+
     def login(self, name, password):
+        global user
         try:
             if collection.find_one({"name":name}) != None:
                 if collection.find_one({"name":name, "password":password}) != None:
@@ -45,6 +53,7 @@ class LoginScreen(Screen):
 
 class SignUpScreen(Screen):
     def SignUp(self, name, p, cp, email, number):
+        global user
         try:
             if p == cp:
                 if collection.find_one({"name":name}) == None:
@@ -64,12 +73,14 @@ class SignUpScreen(Screen):
 class OTPScreen(Screen):
     otp=0
     def sendOTP(self, number):
+        global user
         if collection.find_one({"number":int(number)}) != None:
             self.otp = random.randrange(1000, 9999)
             sendSMS("Your OTP is ", "+91" + number, str(self.otp) + ".")
         else:
             SOSApp().PopUp("Mobile number",  "User not found.", 'OTP')
     def verifyOTP(self, OTP, number):
+        global user
         if str(self.otp) == OTP:
             user = collection.find_one({"number":int(number)})
             return True
@@ -78,6 +89,7 @@ class OTPScreen(Screen):
 
 class FPassScreen(Screen):
     def setPass(self, p, cp):
+        global user
         if p == cp:
             collection.update_one(user, {"$set":{"password":p}})
             SOSApp().PopUp("Welcome back", "Password changed !", 'Main')
@@ -86,6 +98,7 @@ class FPassScreen(Screen):
 
 class MainScreen(Screen):
     def sendAlert(self):
+        global user
         friends = collection.find_one(user)['friends']
         for friend in friends:
             num = friend['number']
@@ -93,25 +106,26 @@ class MainScreen(Screen):
             try:
                 sendSMS(name, "+91"+str(num), " is in danger.")
             except:
-                SOSApp().PopUp(name + " is not verified", "", 'Main')        
+                SOSApp().PopUp(friend['name'] + " is not verified", "", 'Main')        
         SOSApp().PopUp("SOS sent !!", "", 'Main')
 
 class MenuScreen(Screen):
     pass
 
 class ProfileScreen(Screen):
-    user1 = collection.find_one(user)
+    global user
+
+    def update_(self):
+        self.ids.userName.text = user['name']
+        self.ids.email.text = user['mail']
+        self.ids.number.text = str(user['number'])
+
     def update(self, name, email, number):
-        collection.update_one(self.user1, {"$set":{"name":name,"number":int(number), "mail":email}})
-        user = collection.find_one({'_id':self.user1['_id']})
+        global user
+        collection.update_one(user, {"$set":{"name":name,"number":int(number), "mail":email}})
+        user = collection.find_one({'_id':user['_id']})
         return True
         
-class FriendsScreen(Screen):
-    pass
-
-class MapScreen(Screen):
-    pass
-
 class FriendsScreen(Screen):
     pass
 
@@ -124,43 +138,45 @@ class ViewFriends(Screen):
         Screen.add_widget(df)
         return Screen
 
-
-class DeleteFriends(Screen):
-    def delete_friends(self, name):
-        try:
-            myquery = {"name": name}
-            db.collection.delete_one(myquery)
-            collection.update_one(myquery)
-
-            SOSApp().PopUp("Deleted Successfully", "Go Back", 'Delete Friends')
-        except:
-            SOSApp().PopUp("Server issues", "Try after some time", 'Delete Friends')
-
-
 class AddFriends(Screen):
     def add_friends(self, name, number):
+        global user
         try:
-            if collection.find_one({"name": name}) == None:
-                if collection.find_one({"number": int(number)}) == None:
-                    collection.insert_one(
-                        {"name": name,  "number": int(number)})
-                    user = collection.find_one({"name": name})
-                    return True
-                else:
-                    SOSApp().PopUp("Mobile number",  "Can't add the same mobile number twice.", 'Add Friends')
-            else:
-                SOSApp().PopUp("name", "Contact name already exists", 'Add Friends')
+            oldFriends = user['friends']
+            newFriends = oldFriends + [{'name': name, 'number': int(number)}]
+            collection.update_one(user, {"$set":{'friends':newFriends}})
+            SOSApp().PopUp("Added Successfully", "Go Back", 'Delete Friends')
+            return True
         except:
-            SOSApp().PopUp("Server issues", "Try after some time", 'Add Friends')
+            SOSApp().PopUp("Friend error.", "", 'AddFriends')
+            return False
 
+class DeleteFriends(Screen):
+    def delete_friends(self, name, number):
+        global user
+        i = 0
+        try:
+            oldFriends = user['friends']
+            for friend in oldFriends:
+                if friend['name'] == name and friend['number'] == int(number):
+                    i+=1
+                    oldFriends.remove(friend)
+            if i == 1:
+                collection.update_one({'name': user['name']}, {"$set":{'friends':oldFriends}})
+                SOSApp().PopUp("Deleted Successfully", "Go Back", 'Delete Friends')
+                return True
+            else:
+                SOSApp().PopUp("Friend not found.", "Check the details", 'Delete Friends')
+                return False
+        except:
+            SOSApp().PopUp("Server issues", "Try after some time", 'Friends')
+            return False
 
-<<<<<<< HEAD
+class MapScreen(Screen):
+    pass
 
-=======
->>>>>>> 29e6706e7f1fde094e86d3988bcb655709cc740a
 class SOSApp(MDApp):
     dialog = None
-
     def build(self):
         screen = Builder.load_file("screenNavigation.kv")
         self.theme_cls.theme_style = "Light"
