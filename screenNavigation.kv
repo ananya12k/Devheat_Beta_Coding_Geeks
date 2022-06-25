@@ -6,7 +6,6 @@ ScreenManager:
     MainScreen:
     MenuScreen:
     ProfileScreen:
-    MapScreen:
     FriendsScreen:
     ViewFriends:
     AddFriends:
@@ -15,7 +14,8 @@ ScreenManager:
 <LoginScreen>:
     name: 'Login'
     on_enter:
-        root.manager.current = 'Login' if root.logged() else 'Main'
+        userName.text = ""
+        userPass.text = ""
     MDCard:
         size_hint: 0.8, 0.7
         mode: 'fill'
@@ -355,6 +355,14 @@ ScreenManager:
 
 <MenuScreen>:
     name: 'Menu'
+    MDRectangleFlatButton:
+        text: "<-"
+        valign: 'top'
+        pos_hint: {'x':0, 'center_y':0.95}
+        font_style: 'H6'
+        on_press:
+            root.manager.transition.direction = 'right'
+            root.manager.current = 'Main'
     MDCard:
         size_hint: 0.8, 0.7
         mode: 'fill'
@@ -384,19 +392,12 @@ ScreenManager:
             root.manager.transition.direction = 'left'
             root.manager.current = 'Friends'
     MDRectangleFlatButton:
-        text: "Map"
+        text: "Logout"
         pos_hint: {'center_x':0.5, 'center_y':0.3}
         font_style: 'H6'
         on_press:
-            root.manager.transition.direction = 'left'
-            root.manager.current = 'Map'
-    MDRectangleFlatButton:
-        text: "Back"
-        pos_hint: {'center_x':0.5, 'center_y':0.15}
-        font_style: 'H6'
-        on_press:
             root.manager.transition.direction = 'right'
-            root.manager.current = 'Main'
+            root.manager.current = 'Login'
             
 <ProfileScreen>:
     name: 'Profile'
@@ -475,6 +476,20 @@ ScreenManager:
         on_press:
             root.manager.transition.direction = 'right'
             root.manager.current = 'Menu'
+    MDCard:
+        size_hint: 0.8, 0.7
+        mode: 'fill'
+        fill_color: 0.3, 0.3, 0.3, 1
+        pos_hint: {'center_x':0.5, 'center_y':0.4}
+        padding: 25
+        spacing: 25
+    MDLabel:
+        text: "Friends Menu"
+        halign: 'center'
+        pos_hint: {'center_x':0.5, 'center_y':0.80}
+        theme_text_color: 'Custom'
+        text_color: (0.3, 0.3, 0.1, 0.9)
+        font_style: 'H3'
     MDRectangleFlatButton:
         text: "Add Friend"
         pos_hint: {'center_x':0.5, 'center_y':0.6}
@@ -489,27 +504,44 @@ ScreenManager:
         on_press:
             root.manager.transition.direction = 'left'
             root.manager.current = 'DeleteFriends'
+    MDRectangleFlatButton:
+        text: "View Friend"
+        pos_hint: {'center_x':0.5, 'center_y':0.2}
+        font_style: 'H6'
+        on_press:
+            root.manager.transition.direction = 'left'
+            root.manager.current = 'ViewFriends'
 
 <ViewFriends>:
     name:'ViewFriends'
+    on_enter:
+        root.buildTable()
+    MDRectangleFlatButton:
+        text: "<-"
+        valign: 'top'
+        pos_hint: {'x':0, 'center_y':0.95}
+        font_style: 'H6'
+        on_press:
+            root.manager.transition.direction = 'right'
+            root.manager.current = 'Friends'
     MDLabel:
-        text: "View Friends" 
+        text: "Your Friends" 
         halign: 'center'
-        pos_hint: {'center_x':0.5, 'center_y':0.80}
+        pos_hint: {'center_x':0.5, 'center_y':0.95}
         theme_text_color: 'Custom'
         text_color: (0.3, 0.3, 0.1, 0.9)
-        font_style: 'H3'
-    MDDataTable:
-        id: table
-        pos_hint:{'center_x': 0.5, 'center_y': 0.5}
-        size_hint:(0.9, 0.6)
-        check:True
-        rows_num:10,
-        column_data:[("No.", dp(18)),("Food", dp(20)),("Calories", dp(20))]
-        row_data:[("1", "Burger", "300"),("2", "Oats", "200"),("3", "Oats", "200"),("4", "Oats", "200"),("5", "Oats", "200"),("6", "Oats", "200"),("7", "Oats", "200"),("8", "Oats", "100")]
+        font_style: 'H5'
 
 <AddFriends>:
     name: 'AddFriends'
+    MDRectangleFlatButton:
+        text: "<-"
+        valign: 'top'
+        pos_hint: {'x':0, 'center_y':0.95}
+        font_style: 'H6'
+        on_press:
+            root.manager.transition.direction = 'right'
+            root.manager.current = 'Friends'
     MDCard:
         size_hint: 0.8, 0.7
         mode: 'fill'
@@ -605,14 +637,3 @@ ScreenManager:
             t = root.delete_friends(name.text, number.text)
             root.manager.transition.direction = 'right'
             root.manager.current = 'Friends' if t else 'DeleteFriends'
-
-<MapScreen>:
-    name: 'Map'
-    MDRectangleFlatButton:
-        text: "<-"
-        valign: 'top'
-        pos_hint: {'x':0, 'center_y':0.95}
-        font_style: 'H6'
-        on_press:
-            root.manager.transition.direction = 'right'
-            root.manager.current = 'Menu'

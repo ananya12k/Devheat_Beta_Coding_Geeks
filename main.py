@@ -1,4 +1,3 @@
-from turtle import title
 from kivymd.app import MDApp
 from kivy.lang.builder import Builder
 from kivy.uix.screenmanager import Screen
@@ -9,15 +8,9 @@ import pymongo
 import os
 import random
 from dotenv import load_dotenv
-import pandas as pd
 from sms import sendSMS
 
 load_dotenv()
-client = pymongo.MongoClient("serverlink")
-db = client['Friends']
-collection = db['add_and_delete_friends']
-
-
 client = pymongo.MongoClient(os.getenv("serverLink"))    
 db = client['SOS']
 collection = db['SOSUserCollection']
@@ -25,13 +18,6 @@ collection = db['SOSUserCollection']
 user = {}
 
 class LoginScreen(Screen):
-
-    def looged(self):
-        global user
-        if user == {}:
-            return False
-        else:
-            return True
 
     def login(self, name, password):
         global user
@@ -125,36 +111,44 @@ class ProfileScreen(Screen):
         collection.update_one(user, {"$set":{"name":name,"number":int(number), "mail":email}})
         user = collection.find_one({'_id':user['_id']})
         return True
-        
-
-<<<<<<< HEAD
-=======
-class MapScreen(Screen):
-    pass
 
 class FriendsScreen(Screen):
     pass
->>>>>>> 5131401c9f6c1d821f4378f7dd9fc5ea5cadf2ee
+
 class ViewFriends(Screen):
-    def view_friends(self):
-        all_records = collection.find()
-        list_cursor = list(all_records)
-        df = pd.DataFrame(list_cursor)
-        df.set_index("name", inplace=True)
-        Screen.add_widget(df)
-        return Screen
+    def buildTable(self):
+        global user
+        friends = collection.find_one({'name':user['name']})['friends']
+        print(friends)
+        table = MDDataTable(
+            size_hint=(0.9, 0.6),
+            use_pagination=True,
+            pos_hint={'center_x':0.5, 'center_y':0.5},
+            column_data= [("Name", dp(30)), ("Number", dp(30))],
+            row_data= [(friend['name'], friend['number']) for friend in friends]
+        )
+        self.add_widget(table)
 
 class AddFriends(Screen):
     def add_friends(self, name, number):
         global user
+        t = True
         try:
-            oldFriends = user['friends']
-            newFriends = oldFriends + [{'name': name, 'number': int(number)}]
-            collection.update_one(user, {"$set":{'friends':newFriends}})
-            SOSApp().PopUp("Added Successfully", "Go Back", 'Delete Friends')
-            return True
+            for friend in user['friends']:
+                if number == str(friend['number']):
+                    t = False
+
+            if t:
+                oldFriends = user['friends']
+                newFriends = oldFriends + [{'name': name, 'number': int(number)}]
+                collection.update_one(user, {"$set":{'friends':newFriends}})
+                SOSApp().PopUp("Added Successfully", "Go Back", 'Delete Friends')
+                return True
+            else:
+                SOSApp().PopUp("Try again.", "Number alredy exits.", 'Delete Friends')
+                return False
         except:
-            SOSApp().PopUp("Friend error.", "", 'AddFriends')
+            SOSApp().PopUp("Server error.", "", 'AddFriends')
             return False
 
 class DeleteFriends(Screen):
@@ -175,15 +169,8 @@ class DeleteFriends(Screen):
                 SOSApp().PopUp("Friend not found.", "Check the details", 'Delete Friends')
                 return False
         except:
-<<<<<<< HEAD
             SOSApp().PopUp("Server issues", "Try after some time", 'Friends')
             return False
-
-class MapScreen(Screen):
-    pass
-=======
-            SOSApp().PopUp("Server issues", "Try after some time", 'Add Friends')
->>>>>>> 5131401c9f6c1d821f4378f7dd9fc5ea5cadf2ee
 
 class SOSApp(MDApp):
     dialog = None
