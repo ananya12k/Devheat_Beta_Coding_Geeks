@@ -8,14 +8,16 @@ Team Members:-</br>
 
 
 Techs used:-</br>
-->We have used python for making this app. We have used Kivymd library for this purpose.</br>
+->We have used programming language Python for making this app. We have used Kivymd library for this purpose.</br>
 ->We have used twilio lib to enable our functionality of sending sms alert to friends</br>
 ->We have used MongoDB as database(pymongo in python) for user to store our list of friends</br>
 
 
 Future goals:-</br>
 ->We also look forward to add certain new features like we are planning to add GPS location provider which will provide location along with  alert message whenever the user is in danger to the members in friend list.</br>
-
+->We also look forward to send voice messages in sms</br>
+->We also excited to find a way to include motion sensor in our app which'll trigger the alert button automatically and send "HELP ME" messages to the members in the friends list.</br>
+By this feature there'll be no need of opening our phone then app to send alert messages, only a particular motion will do the job</br></br>
 
 Summary of our application-</br>
 In this application, we provide users, features like sign up, sign in, login using password, also they will be able to make a friend’s list  who will be alerted when the user is in danger through message. If a user forgets his/her password of login id he/she will be easily able to change password. Also, if a user wants to delete friend’s list he/she can easily do it .  An OTP will be sent to  user’s mobile number for security reasons to change ones login password . When user is in danger he/she is just required to click a button to alert their friends and family members. It will send an alert message to the members in friends list. It will also allow user to edit alert message . If a user is no longer using the app he/she can easily delete his/her profile.  
