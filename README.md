@@ -1,9 +1,26 @@
 # Devheat_Beta_coding_geeks
 Repository for Devheat Beta hackathon</br>
+</br>
+Team Members:-</br>
+1. Ananya Kulkarni
+2. Devansh Makwana
+3. Khushi Shah
 
- Summary of our application-
+
+Techs used:-</br>
+->We have used python for making this app. We have used Kivymd library for this purpose.</br>
+->We have used twilio lib to enable our functionality of sending sms alert to friends</br>
+->We have used MongoDB as database(pymongo in python) for user to store our list of friends</br>
+
+
+Future goals:-</br>
+->We also look forward to add certain new features like we are planning to add GPS location provider which will provide location along with  alert message whenever the user is in danger to the members in friend list.</br>
+
+
+Summary of our application-</br>
 In this application, we provide users, features like sign up, sign in, login using password, also they will be able to make a friend’s list  who will be alerted when the user is in danger through message. If a user forgets his/her password of login id he/she will be easily able to change password. Also, if a user wants to delete friend’s list he/she can easily do it .  An OTP will be sent to  user’s mobile number for security reasons to change ones login password . When user is in danger he/she is just required to click a button to alert their friends and family members. It will send an alert message to the members in friends list. It will also allow user to edit alert message . If a user is no longer using the app he/she can easily delete his/her profile.  
-	Procedure to create an account-
+
+Procedure to create an account-</br>
 1.	First user needs to create account by entering username, e-mail id, phone number and by creating a password:</br>
 ![image](https://user-images.githubusercontent.com/107758523/175778591-c3c005c2-edc9-49c2-8604-088c9c0d256a.png)</br>
 2.	Then user needs to enter details of friends in friends list by clicking on Friends button of Menu:</br>
@@ -12,6 +29,7 @@ In this application, we provide users, features like sign up, sign in, login usi
 ![image](https://user-images.githubusercontent.com/107758523/175778723-1e6be60d-8397-46e3-951f-001d7063b755.png)</br>
 And now click on save to save the details.</br>
 And now you are good to go.</br>
+
 
 Procedure to send an alert message to member of friends list:</br>
 1.	First you need to login to the app, if you are already a member:</br>
@@ -32,9 +50,5 @@ Procedure to send an alert message to member of friends list:</br>
 3.	Then in Reset Password, user needs to enter the new password.And click on Set Password to set the new password.</br>
 ![image](https://user-images.githubusercontent.com/107758523/175778948-a50a12bd-200a-4747-90fc-7b63f52b74e8.png)</br>
 
-
-
-	We have used python for making this app. We have used Kivymd library for this purpose.</br>
-  In future, we also look forward to add certain new features like we are planning to add GPS location provider which will provide location along with  alert message whenever the user is in danger to the members in friend list.</br>
-	Small demonstration of our application:
+Small demonstration of our application:</br>
   https://drive.google.com/file/d/1KjvHnlc4KPMhGFXPZF67Gp3nsRMi0Yn1/view?usp=drivesdk
