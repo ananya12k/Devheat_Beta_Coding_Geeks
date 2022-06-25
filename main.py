@@ -1,3 +1,4 @@
+from gc import collect
 from kivymd.app import MDApp
 from kivy.lang.builder import Builder
 from kivy.uix.screenmanager import Screen
@@ -44,7 +45,7 @@ class SignUpScreen(Screen):
             if p == cp:
                 if collection.find_one({"name":name}) == None:
                     if collection.find_one({"number":int(number)}) == None:
-                        collection.insert_one({"name":name, "password":p, "number":int(number), "mail":email, "friends":[]})
+                        collection.insert_one({"name":name, "password":p, "number":int(number), "mail":email, 'msg':"I am in Danger","friends":[]})
                         user = collection.find_one({"name":name, "password":p})
                         return True
                     else:
@@ -85,12 +86,12 @@ class FPassScreen(Screen):
 class MainScreen(Screen):
     def sendAlert(self):
         global user
-        friends = collection.find_one(user)['friends']
+        friends = user['friends']
         for friend in friends:
             num = friend['number']
-            name = collection.find_one(user)['name']
+            name = user['name']
             try:
-                sendSMS(name, "+91"+str(num), " is in danger.")
+                sendSMS(name + " : ", "+91"+str(num), user['msg'])
             except:
                 SOSApp().PopUp(friend['name'] + " is not verified", "", 'Main')        
         SOSApp().PopUp("SOS sent !!", "", 'Main')
@@ -99,9 +100,8 @@ class MenuScreen(Screen):
     pass
 
 class ProfileScreen(Screen):
-    global user
-
     def update_(self):
+        global user
         self.ids.userName.text = user['name']
         self.ids.email.text = user['mail']
         self.ids.number.text = str(user['number'])
@@ -132,21 +132,13 @@ class ViewFriends(Screen):
 class AddFriends(Screen):
     def add_friends(self, name, number):
         global user
-        t = True
         try:
-            for friend in user['friends']:
-                if number == str(friend['number']):
-                    t = False
-
-            if t:
-                oldFriends = user['friends']
-                newFriends = oldFriends + [{'name': name, 'number': int(number)}]
-                collection.update_one(user, {"$set":{'friends':newFriends}})
-                SOSApp().PopUp("Added Successfully", "Go Back", 'Delete Friends')
-                return True
-            else:
-                SOSApp().PopUp("Try again.", "Number alredy exits.", 'Delete Friends')
-                return False
+            oldFriends = user['friends']
+            newFriends = oldFriends + [{'name': name, 'number': int(number)}]
+            collection.update_one(user, {"$set":{'friends':newFriends}})
+            user = collection.find_one({'_id':user['_id']})
+            SOSApp().PopUp("Added Successfully", "Go Back", 'Delete Friends')
+            return True
         except:
             SOSApp().PopUp("Server error.", "", 'AddFriends')
             return False
@@ -171,6 +163,16 @@ class DeleteFriends(Screen):
         except:
             SOSApp().PopUp("Server issues", "Try after some time", 'Friends')
             return False
+
+class MessageScreen(Screen):
+    def update_(self):
+        global user
+        self.ids.msg.text = user['msg']
+    def update(self, msg):
+        global user
+        collection.update_one(user, {"$set":{'msg':msg}})
+        user = collection.find_one({'_id':user['_id']})
+        return True
 
 class SOSApp(MDApp):
     dialog = None
