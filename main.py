@@ -80,8 +80,10 @@ class FPassScreen(Screen):
         if p == cp:
             collection.update_one(user, {"$set":{"password":p}})
             SOSApp().PopUp("Welcome back", "Password changed !", 'Main')
+            return True
         else:
             SOSApp().PopUp("Confirm Password", "Password & Confirm Password must be same.", 'FPass')
+            return False
 
 class MainScreen(Screen):
     def sendAlert(self):
