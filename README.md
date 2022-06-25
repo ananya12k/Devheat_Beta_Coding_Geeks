@@ -1,6 +1,8 @@
 # Devheat_Beta_coding_geeks
 Repository for Devheat Beta hackathon</br>
 </br>
+Application Name:-</br>
+My SOS app</br></br>
 Team Members:-</br>
 1. Ananya Kulkarni
 2. Devansh Makwana
@@ -10,7 +12,7 @@ Team Members:-</br>
 Techs used:-</br>
 ->We have used programming language Python for making this app. We have used Kivymd library for this purpose.</br>
 ->We have used twilio lib to enable our functionality of sending sms alert to friends</br>
-->We have used MongoDB as database(pymongo in python) for user to store our list of friends</br>
+->We have used MongoDB as database(pymongo in python) so that user can store list of friends</br>
 
 
 Future goals:-</br>
