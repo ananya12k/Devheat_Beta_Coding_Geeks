@@ -214,15 +214,15 @@ ScreenManager:
         theme_text_color: "Hint"
         on_release:
             self.icon = "eye" if self.icon == "eye-off" else "eye-off"
-            newCPass.password = False if userPass.password is True else True
+            newCPass.password = False if newCPass.password is True else True
     MDFillRoundFlatButton:
         text: "Set Password"
         fill_color: 1, 1, 0, 0.8
         pos_hint:{'center_x':0.5,'center_y':0.35}
         on_press:
-            root.setPass(newPass.text, newCPass.text)
+            t = root.setPass(newPass.text, newCPass.text)
             root.manager.transition.direction = 'right'
-            root.manager.current = 'Login'
+            root.manager.current = 'Login' if t else 'FPass'
 
 <SignUpScreen>:
     name: "SignUp"
