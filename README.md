@@ -11,6 +11,7 @@ Team Members:-</br>
 
 Techs used:-</br>
 ->We have used programming language Python for making this app. We have used Kivymd library for this purpose.</br>
+->We also made authentication system for the user who wants to use the application </br>
 ->We have used twilio lib to enable our functionality of sending sms alert to friends</br>
 ->We have used MongoDB as database(pymongo in python) so that user can store list of friends</br>
 
