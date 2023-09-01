@@ -61,3 +61,9 @@ We can check it in View Friends list</br>
 
 ## Small demonstration of our application:-</br>
   https://drive.google.com/file/d/1KjvHnlc4KPMhGFXPZF67Gp3nsRMi0Yn1/view?usp=drivesdk
+
+ ## To run project:
+ 1. pip install pymongo kivy kivymd python-dotenv sms.
+ 2. Create a MongoDB Atlas Account and create a cluster.
+ 3. Create .env file in project directory and create variablr serverLink = "your mongodb server link".
+ 4. Create Twilio Account and store it's SID and TOKEN in '.env' file.

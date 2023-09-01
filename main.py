@@ -10,7 +10,13 @@ import os
 import random
 from dotenv import load_dotenv
 from sms import sendSMS
-
+# .env files has all the sensitive data
+# First create a .env file in the same directory as main.py
+# Then add the following lines to it:
+# serverLink = "your mongodb server link"
+# SID = "your twilio SID"
+# TOKEN = "your twilio TOKEN"
+# Now you can use the following code to access the data in .env file
 load_dotenv()
 client = pymongo.MongoClient(os.getenv("serverLink"))    
 db = client['SOS']
