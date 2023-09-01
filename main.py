@@ -23,7 +23,7 @@ db = client['SOS']
 collection = db['SOSUserCollection']
 
 user = {}
-
+# Login Screen
 class LoginScreen(Screen):
 
     def login(self, name, password):
@@ -43,7 +43,7 @@ class LoginScreen(Screen):
         except:
             SOSApp().PopUp("Server Error", "Try after some time", 'Login')
             return False
-
+# Sign Up Screen
 class SignUpScreen(Screen):
     def SignUp(self, name, p, cp, email, number):
         global user
@@ -62,7 +62,7 @@ class SignUpScreen(Screen):
                 SOSApp().PopUp("Confirm Password", "Password & Confirm Password must be same", 'SignUp')
         except:
             SOSApp().PopUp("Server issues", "Try after some time", 'SignUp')
-
+# OTP Screen
 class OTPScreen(Screen):
     otp=0
     def sendOTP(self, number):
@@ -79,7 +79,7 @@ class OTPScreen(Screen):
             return True
         else:
             SOSApp().PopUp("OTP",  "Invalid OTP.", 'OTP')
-
+# Forgot Password Screen
 class FPassScreen(Screen):
     def setPass(self, p, cp):
         global user
@@ -90,7 +90,7 @@ class FPassScreen(Screen):
         else:
             SOSApp().PopUp("Confirm Password", "Password & Confirm Password must be same.", 'FPass')
             return False
-
+# Main Screen
 class MainScreen(Screen):
     def sendAlert(self):
         global user
@@ -103,10 +103,10 @@ class MainScreen(Screen):
             except:
                 SOSApp().PopUp(friend['name'] + " is not verified", "", 'Main')        
         SOSApp().PopUp("SOS sent !!", "", 'Main')
-
+# Menu Screen
 class MenuScreen(Screen):
     pass
-
+# Profile Screen
 class ProfileScreen(Screen):
     def update_(self):
         global user
@@ -119,10 +119,10 @@ class ProfileScreen(Screen):
         collection.update_one(user, {"$set":{"name":name,"number":int(number), "mail":email}})
         user = collection.find_one({'_id':user['_id']})
         return True
-
+# Friends Screen
 class FriendsScreen(Screen):
     pass
-
+# View Friends Screen
 class ViewFriends(Screen):
     def buildTable(self):
         global user
@@ -136,7 +136,7 @@ class ViewFriends(Screen):
             row_data= [(friend['name'], friend['number']) for friend in friends]
         )
         self.add_widget(table)
-
+# Add Friends Screen
 class AddFriends(Screen):
     def add_friends(self, name, number):
         global user
@@ -150,7 +150,7 @@ class AddFriends(Screen):
         except:
             SOSApp().PopUp("Server error.", "", 'AddFriends')
             return False
-
+# Delete Friends Screen
 class DeleteFriends(Screen):
     def delete_friends(self, name, number):
         global user
@@ -171,7 +171,7 @@ class DeleteFriends(Screen):
         except:
             SOSApp().PopUp("Server issues", "Try after some time", 'Friends')
             return False
-
+# Message Screen
 class MessageScreen(Screen):
     def update_(self):
         global user
@@ -181,7 +181,7 @@ class MessageScreen(Screen):
         collection.update_one(user, {"$set":{'msg':msg}})
         user = collection.find_one({'_id':user['_id']})
         return True
-
+# SOS App Class
 class SOSApp(MDApp):
     dialog = None
     def build(self):
@@ -200,5 +200,5 @@ class SOSApp(MDApp):
             )
         self.dialog.open()
         return src
-
+# Run App
 SOSApp().run()
